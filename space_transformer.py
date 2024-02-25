@@ -17,7 +17,7 @@ epoch = 50
 batch_eval_inter = 100
 eval_train_test = 10
 n_embd = 64
-n_heads = 8
+n_heads = 4
 n_layers = 2
 step_size = 50
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -76,13 +76,13 @@ def train_loop(i, see_batch_loss = False):
         
 
 
-def test_loop(dataset):
+def test_loop(loader):
     model.eval()
     with torch.no_grad():
         total_loss = 0
         y_true = []
         y_preds = []
-        for data, label in dataset:
+        for data, label in loader:
             data , label = data.to(device), label.to(device)
             logits = model(data)
     
