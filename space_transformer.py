@@ -6,17 +6,20 @@ from torch.utils.data import random_split
 from model import space_finder
 from data import tit_space
 import time
+from sklearn.metrics import accuracy_score
+torch.manual_seed(42)
 
 # Hyperparameter----
 
-batch_size = 256
+batch_size = 64
 lr = 1e-2
-epoch = 100
+epoch = 50
 batch_eval_inter = 100
 eval_train_test = 10
-n_embd = 512
+n_embd = 64
 n_heads = 8
-n_layers = 6
+n_layers = 2
+step_size = 50
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 # eval_test = 10
 
@@ -37,15 +40,10 @@ model = model.to(device)
 # loss ,Optimizer, Scheduler
 loss_fn = nn.BCEWithLogitsLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr = lr)
-scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size = 20, gamma = 0.1)
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size = step_size, gamma = 0.1)
 
 
 #Training the model
-start = time.time()
-
-import time
-from sklearn.metrics import accuracy_score
-
 def train_loop(i, see_batch_loss = False):
     model.train()
     total_loss = 0
@@ -99,7 +97,8 @@ def test_loop(dataset):
     # print(f'val_loss: {total_loss/len(test_loader)}, val_acc: {accuracy_score(y_true, y_preds)}')  
 
 if __name__ == '__main__':
-
+    print(f'{n_embd = }, {n_layers = }, {n_heads = }, {batch_size = }')
+    start = time.time()
     for epoch in range(epoch): 
         train_loop(epoch)
         # break

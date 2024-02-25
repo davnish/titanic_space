@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import torch.functional as F
+import torch.nn.functional as F
 
 class space_finder(nn.Module):
     def __init__(self, n_embd, n_heads, n_layers):
