@@ -61,11 +61,11 @@ class sa_layer(nn.Module):
         self.v = nn.Linear(n_embd, head_size, bias = False)
 
     def forward(self, x):
-
+    
         q = self.q(x)
         k = self.k(x)
 
-        wei = q @ k.transpose(0,1) * 100  ** -0.5
+        wei = q @ k.transpose(0,1) * (k.size(-1)  ** -0.5)
         wei = F.softmax(wei, dim = -1)
 
         v = self.v(x)
